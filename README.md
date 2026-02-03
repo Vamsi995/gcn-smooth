@@ -252,7 +252,6 @@ This script trains a depth-16 Laplacian-LoRA model and produces the spectral plo
 laplacian-lora/
 ├── src/                # Core models and utilities
 ├── experiments/        # Reproducible experiment scripts
-├── plotting/           # Plot helpers
 ├── assets/             # Figures
 ├── results/            # Saved metrics (JSON)
 └── paper/              # Paper
