@@ -22,6 +22,91 @@ Laplacian-LoRA answers **yes**.
 
 ---
 
+## Setup & Usage
+
+This repository contains a modular PyTorch + PyTorch Geometric implementation of Laplacian-LoRA, along with scripts to reproduce all experiments and figures from the paper.
+
+### 🔹 Installation
+
+- Clone the repository:
+```
+git clone https://github.com/<your-username>/laplacian-lora.git
+cd laplacian-lora
+```
+
+- Install dependencies:
+```
+pip install -r requirements.txt
+```
+
+### 🚀 Running Experiments
+
+All experiments are implemented as standalone scripts under `experiments/`.
+
+#### 📈 Accuracy vs Depth
+
+Reproduces accuracy–depth scaling across datasets.
+```
+python experiments/run_accuracy_vs_depth.py
+```
+
+#### 🧊 Oversmoothing Diagnostics (Embedding Variance)
+
+Measures representational collapse as a function of depth.
+```
+python experiments/run_embedding_variance.py
+```
+
+#### 📊 Spectral Analysis
+
+Analyzes the learned spectral behavior of Laplacian-LoRA:
+
+Propagation spectrum
+
+Depth-wise spectral contraction
+
+Frequency-wise energy retention
+
+```
+python experiments/run_spectral_analysis.py
+```
+
+This script trains a depth-16 Laplacian-LoRA model and produces the spectral plots shown in the paper.
+
+#### 📂 Repository Structure
+```
+laplacian-lora/
+├── src/                # Core models and utilities
+├── experiments/        # Reproducible experiment scripts
+├── plotting/           # Plot helpers
+├── assets/             # Figures
+├── results/            # Saved metrics (JSON)
+└── paper/              # Paper
+```
+#### 🧠 Reproducibility Notes
+
+All experiments fix random seeds
+
+Laplacian eigendecompositions are computed per dataset
+
+Laplacian-LoRA uses depth-annealed spectral adaptation
+
+Oversmoothing is delayed, not eliminated
+
+#### 🖥️ Hardware
+
+Experiments were run on a single GPU (e.g., NVIDIA A100).
+Smaller datasets (Cora, CiteSeer) can be run comfortably on CPU.
+
+#### 📄 Paper
+
+The full paper is included at:
+```
+paper/LaplacianLoRA.pdf
+```
+
+---
+
 ## Core Idea
 
 Laplacian-LoRA introduces a **low-rank spectral correction** to the fixed GCN propagation operator.
