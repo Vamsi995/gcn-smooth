@@ -76,20 +76,107 @@ Early layers behave like standard GCNs; deeper layers receive stronger contracti
 
 ## Results
 
-### Accuracy vs Depth
-- Standard GCNs degrade rapidly beyond depth 8–16
-- Laplacian-LoRA **consistently maintains higher accuracy**
-- Effective depth is extended by up to **2×**
 
-### Oversmoothing Diagnostics
-- Embedding variance decays much more slowly
-- Representational collapse is **delayed, not eliminated**
 
-### Spectral Analysis
-Laplacian-LoRA learns a correction that is:
-- Smooth and monotonic
-- Bounded and stable
-- Does **not** introduce amplification or oscillations
+## 🔹 Accuracy vs Depth
+
+Test accuracy as a function of network depth across benchmark datasets.
+
+As depth increases, standard GCNs suffer rapid performance degradation due to oversmoothing.  
+In contrast, Laplacian-LoRA consistently maintains higher accuracy at intermediate depths, effectively extending the usable depth of graph convolution by up to **2×**.
+
+#### PubMed
+![Accuracy vs Depth on PubMed](assets/depthvsacc_pubmed.png)
+
+#### Cora
+![Accuracy vs Depth on Cora](assets/depthvsacc_cora.png)
+
+#### CoauthorPhysics
+![Accuracy vs Depth on CoauthorPhysics](assets/depthvsacc_coauthorphysics.png)
+
+#### CoauthorCS
+![Accuracy vs Depth on CoauthorCS](assets/depthvsacc_coauthorcs.png)
+
+#### CiteSeer
+![Accuracy vs Depth on CiteSeer](assets/depthvsacc_citeseer.png)
+
+**Key observations:**
+- Standard GCN accuracy degrades sharply beyond depths 8–16
+- Laplacian-LoRA consistently outperforms GCNs at moderate depths
+- Both methods eventually degrade, indicating oversmoothing is delayed rather than eliminated
+
+---
+
+## 🔹 Oversmoothing Diagnostics: Embedding Variance
+
+To directly measure representational collapse, we analyze the variance of node embeddings as a function of depth.
+
+Standard GCNs exhibit rapid variance decay, indicating strong contraction toward uniform representations.  
+Laplacian-LoRA preserves substantially higher variance at intermediate depths, confirming delayed oversmoothing.
+
+#### Cora
+![Embedding Variance vs Depth on Cora](assets/depthvsvar_cora.png)
+
+#### CoauthorCS
+![Embedding Variance vs Depth on CoauthorCS](assets/depthvsvar_coauthorcs.png)
+
+**Key observations:**
+- Embedding variance in GCNs collapses rapidly with depth
+- Laplacian-LoRA slows this collapse significantly
+- Representational diversity is retained longer, aligning with improved accuracy trends
+
+---
+
+
+## 🔹 Spectral Analysis & Diagnostics
+
+This section visualizes how Laplacian-LoRA weakens spectral contraction while preserving stability and the low-pass inductive bias of standard GCNs.
+
+---
+
+### 🔹 Propagation Spectrum
+
+Propagation eigenvalues as a function of the Laplacian eigenvalue `λ`.  
+Laplacian-LoRA shifts non-constant modes upward while remaining strictly stable.
+
+#### Cora
+![Propagation Spectrum on Cora](assets/cora_spectrum.png)
+
+#### CoauthorCS
+![Propagation Spectrum on CoauthorCS](assets/coauthorcs_spectrum.png)
+
+---
+
+### 🔹 Depth-wise Spectral Contraction
+
+Depth-dependent contraction ratio governing representational collapse:
+
+`(|μ₂| / |μ₁|)^L`
+
+Laplacian-LoRA slows this decay, delaying oversmoothing.
+
+#### Cora
+![Spectral Contraction vs Depth on Cora](assets/cora_spectralratio.png)
+
+#### CoauthorCS
+![Spectral Contraction vs Depth on CoauthorCS](assets/coauthorcs_spectralratio.png)
+
+---
+
+### 🔹 Frequency-wise Energy Retention
+
+Retained spectral energy after 16 propagation layers:
+
+`E(λ; L) = |μ(λ)|^L`
+
+Laplacian-LoRA preserves substantially more energy at intermediate and high Laplacian frequencies.
+
+#### Cora
+![Energy Retention after 16 Layers on Cora](assets/cora_energy.png)
+
+#### CoauthorCS
+![Energy Retention after 16 Layers on CoauthorCS](assets/coauthorcs_energy.png)
+
 
 Key diagnostics:
 - Slower depth-wise spectral contraction
