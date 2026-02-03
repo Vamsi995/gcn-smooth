@@ -10,9 +10,6 @@ from src.laplacian import compute_laplacian_eig
 from src.models.laplacian_lora import LaplacianLoRAGCN
 from src.train import train_and_eval
 
-# --------------------------------------------------
-# Configuration
-# --------------------------------------------------
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -31,9 +28,6 @@ ALPHA = 0.5
 LR = 0.01
 WEIGHT_DECAY = 5e-4
 
-# --------------------------------------------------
-# Helpers
-# --------------------------------------------------
 
 @torch.no_grad()
 def extract_theta(lora_model):
@@ -114,9 +108,6 @@ def plot_energy_retention(lam, mu_gcn, mu_lora, L_plot, title):
     plt.show()
 
 
-# --------------------------------------------------
-# Main
-# --------------------------------------------------
 
 if __name__ == "__main__":
     set_seed(0)
